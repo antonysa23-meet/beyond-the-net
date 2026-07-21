@@ -29,19 +29,39 @@
         <li><a href="programs-and-services.html">Programs &amp; Services</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="get-involved.html">Get Involved</a></li>
+        <li class="nav__more">
+          <button class="nav__more-btn" type="button" aria-expanded="false" aria-controls="more-menu">
+            More <span class="nav__caret" aria-hidden="true"></span>
+          </button>
+          <ul class="nav__submenu" id="more-menu">
+            <li><a href="events.html">Events</a></li>
+            <li><a href="blog/">Blog</a></li>
+            <li><a href="book-online/">Book Online</a></li>
+          </ul>
+        </li>
       </ul>
-      <button class="nav__search" type="button" aria-label="Search">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path>
-        </svg>
+      <button class="nav__search" type="button" aria-label="Search" data-search-open>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
       </button>
     </nav>
   </div>
 </header>
 
+<div class="search-panel" id="search-panel" hidden>
+  <div class="search-panel__bar">
+    <label class="visually-hidden" for="search-input">Search</label>
+    <div class="search-panel__field">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+      <input id="search-input" type="search" placeholder="Search" autocomplete="off">
+    </div>
+    <button class="search-panel__close" type="button" data-search-close>Close</button>
+  </div>
+  <div class="search-panel__results" id="search-results" aria-live="polite"></div>
+</div>
+
 <main id="main">
 
-  <section class="home-top">
+<section class="home-top">
     <div class="home-top__copy">
       <h1>Welcome to <em>Beyond the Net.</em></h1>
       <p>Empowering youth with mentorship that goes farther than the court.</p>
@@ -114,11 +134,7 @@
         <a href="mailto:beyondthenethtx@gmail.com">beyondthenethtx@gmail.com</a>
       </p>
       <a class="footer__social" href="https://www.instagram.com/beyondthenethtx/" target="_blank" rel="noopener" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-          <rect x="3" y="3" width="18" height="18" rx="5"></rect>
-          <circle cx="12" cy="12" r="4"></circle>
-          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg>
       </a>
     </div>
 
@@ -133,6 +149,7 @@
   </div>
 </footer>
 
+<script>window.SITE_BASE = "";</script>
 <script src="assets/js/site.js"></script>
 </body>
 </html>

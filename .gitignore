@@ -1,4 +1,8 @@
 .playwright-mcp/
 _source/
+_source2/
+_crawl/
 new-*.jpeg
 ref-*.jpeg
+__pycache__/
+*.pyc
