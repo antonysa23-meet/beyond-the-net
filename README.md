@@ -17,12 +17,15 @@ get-involved.html                   Ways to get involved and contact details
 events.html                         Upcoming events + past events list
 blog/                               Blog index
 post/<slug>/                        3 blog posts
-book-online/                        Service list
-service-page/<slug>/                3 services
 event-details/<slug>/               3 past events
 ```
 
 URLs mirror the original Wix paths, so existing links and bookmarks keep working.
+
+The Wix Bookings pages (Book Online and the three paid services) are turned off via
+`SHOW_SERVICES = False` in `_tools/content.py`. Their content and images are still in the
+repo — set the flag to `True` and rebuild to bring the pages, the nav entry, and their
+search results back.
 
 ## Structure
 

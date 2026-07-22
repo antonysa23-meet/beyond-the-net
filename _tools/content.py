@@ -7,6 +7,11 @@ including its typos, which are preserved deliberately so the rebuild is faithful
 EMAIL = "beyondthenethtx@gmail.com"
 INSTAGRAM = "https://www.instagram.com/beyondthenethtx/"
 
+# The Wix Bookings pages (Book Online + the three paid services) are switched off.
+# The SERVICES data below is kept so flipping this back to True restores the pages,
+# their nav entry, and their search results in one step — then run _tools/build.py.
+SHOW_SERVICES = False
+
 # --------------------------------------------------------------------- events
 # All three are past events, which is why /events shows "No events at the moment".
 EVENTS = [

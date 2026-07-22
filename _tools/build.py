@@ -30,6 +30,7 @@ INSTAGRAM_ICON = (
 )
 
 NAV = [
+    ("index.html", "Home"),
     ("programs-and-services.html", "Programs &amp; Services"),
     ("about.html", "About"),
     ("get-involved.html", "Get Involved"),
@@ -37,8 +38,9 @@ NAV = [
 MORE = [
     ("events.html", "Events"),
     ("blog/", "Blog"),
-    ("book-online/", "Book Online"),
 ]
+if C.SHOW_SERVICES:
+    MORE.append(("book-online/", "Book Online"))
 FOOTER_NAV = [
     ("programs-and-services.html", "Programs &amp; Services"),
     ("about.html", "About"),
@@ -359,21 +361,25 @@ def search_index():
                      "desc": f"{e['when']} — {e['where']}",
                      "img": f"assets/img/{e['image']}" if e["image"] else "",
                      "text": " ".join([e["title"], e["summary"], e["about"], e["venue"], e["where"]])})
-    for s in C.SERVICES:
-        docs.append({"t": "Services", "title": s["title"], "url": f"service-page/{s['slug']}/",
-                     "desc": s["description"],
-                     "img": f"assets/img/{s['image']}" if s["image"] else "",
-                     "text": " ".join([s["title"], s["tagline"], s["description"], s["price"]])})
+    if C.SHOW_SERVICES:
+        for s in C.SERVICES:
+            docs.append({"t": "Services", "title": s["title"], "url": f"service-page/{s['slug']}/",
+                         "desc": s["description"],
+                         "img": f"assets/img/{s['image']}" if s["image"] else "",
+                         "text": " ".join([s["title"], s["tagline"], s["description"], s["price"]])})
     for b in C.POSTS:
         docs.append({"t": "Blog Posts", "title": b["title"], "url": f"post/{b['slug']}/",
                      "desc": b["body"][0],
                      "img": f"assets/img/{b['image']}" if b["image"] else "",
                      "text": " ".join([b["title"]] + b["body"])})
     # Site pages: index the visible prose of each static page
-    for path, title in [("index.html", "Home"), ("about.html", "About"),
-                        ("programs-and-services.html", "Programs & Services"),
-                        ("get-involved.html", "Get Involved"), ("events.html", "Events"),
-                        ("blog/", "Blog"), ("book-online/", "Book Online")]:
+    site_pages = [("index.html", "Home"), ("about.html", "About"),
+                  ("programs-and-services.html", "Programs & Services"),
+                  ("get-involved.html", "Get Involved"), ("events.html", "Events"),
+                  ("blog/", "Blog")]
+    if C.SHOW_SERVICES:
+        site_pages.append(("book-online/", "Book Online"))
+    for path, title in site_pages:
         src = {"blog/": None, "book-online/": None}.get(path, path)
         text = title
         if src:
@@ -424,15 +430,16 @@ def main():
         write(path, shell(path, f"{post['title']} | Beyond The Net",
                           post["body"][0][:155], post_page(post, "../../"), "blog/"))
 
-    write("book-online/index.html", shell(
-        "book-online/index.html", "Book Online | Beyond The Net",
-        "Sessions and mentorship offered by Beyond the Net.",
-        booking_index("../"), "book-online/"))
+    if C.SHOW_SERVICES:
+        write("book-online/index.html", shell(
+            "book-online/index.html", "Book Online | Beyond The Net",
+            "Sessions and mentorship offered by Beyond the Net.",
+            booking_index("../"), "book-online/"))
 
-    for s in C.SERVICES:
-        path = f"service-page/{s['slug']}/index.html"
-        write(path, shell(path, f"{s['title']} | Beyond The Net", s["description"][:155],
-                          service_page(s, "../../"), "book-online/"))
+        for s in C.SERVICES:
+            path = f"service-page/{s['slug']}/index.html"
+            write(path, shell(path, f"{s['title']} | Beyond The Net", s["description"][:155],
+                              service_page(s, "../../"), "book-online/"))
 
     for e in C.EVENTS:
         path = f"event-details/{e['slug']}/index.html"

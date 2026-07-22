@@ -254,13 +254,15 @@ body.search-open { overflow: hidden; }
 
 /* Columns trace the measured x-boundaries of the Wix layout:
    0 | 60 | 570 | 948 | 1335 | 1425 — which lets the mission panel and the
-   hero photo overlap on the same grid without absolute positioning. */
+   hero photo overlap on the same grid without absolute positioning.
+   Expressed as percentages of the 1425px canvas so the design scales down
+   between the 1120px breakpoint and full width instead of overflowing. */
 .home-top {
   display: grid;
   max-width: var(--design);
   margin-inline: auto;
-  grid-template-columns: 60px 510px 378px 387px 90px;
-  grid-template-rows: 262px 585px 103px;
+  grid-template-columns: 4.2105% 35.7895% 26.5263% 27.1579% 6.3158%;
+  grid-template-rows: 262px minmax(585px, auto) 103px;
 }
 
 .home-top__copy {
@@ -306,7 +308,7 @@ body.search-open { overflow: hidden; }
   position: relative; z-index: 2;
   background: var(--brand);
   display: flex; flex-direction: column; justify-content: center;
-  padding: 40px 60px 40px 172px;
+  padding: 40px 7.8% 40px 22.5%;   /* 60px / 172px of the 765px panel */
 }
 
 /* Shared "eyebrow label + big serif statement" block used in the crimson panels */
@@ -349,7 +351,7 @@ body.search-open { overflow: hidden; }
   max-width: var(--design);
   margin-inline: auto;
   width: 100%;
-  padding: 60px var(--gutter) 60px 301px;
+  padding: 60px 4.2105% 60px 21.12%;   /* 60px / 301px of the 1425px canvas */
 }
 .impact h2 {
   font-size: 18px; font-weight: 700; color: var(--white);
@@ -365,12 +367,12 @@ body.search-open { overflow: hidden; }
 
 /* --------------------------------------------------------- home services */
 
-/* Boundaries: 0 | 60 | 370 | 400 | 1025 | 1055 | 1365 | 1425 */
+/* Boundaries: 0 | 60 | 370 | 400 | 1025 | 1055 | 1365 | 1425, as percentages */
 .services {
   display: grid;
   max-width: var(--design);
   margin-inline: auto;
-  grid-template-columns: 60px 310px 30px 625px 30px 310px 60px;
+  grid-template-columns: 4.2105% 21.7544% 2.1053% 43.8596% 2.1053% 21.7544% 4.2105%;
   min-height: 780px;
 }
 .services__img--left  { grid-column: 2; }
@@ -380,7 +382,7 @@ body.search-open { overflow: hidden; }
   grid-column: 4;
   background: var(--brand);
   display: flex; flex-direction: column; justify-content: center;
-  padding: 40px 60px 40px 125px;
+  padding: 40px 9.6% 40px 20%;   /* 60px / 125px of the 625px panel */
 }
 
 /* ------------------------------------------------------- home supporters */
@@ -864,7 +866,13 @@ body.search-open { overflow: hidden; }
   .services__panel { grid-column: 1; order: 2; padding: 56px var(--gutter); }
 
   .pillars__grid { gap: 56px; }
+  /* The decorative indents on the text and the images must drop together —
+     leaving the image margins on here pushed them past the viewport. */
   .pillar h2, .pillar p { padding-left: 0; }
+  .pillar__media { justify-items: start; }
+  .pillar--mission .pillar__media img,
+  .pillar--vision .pillar__media img:first-child,
+  .pillar--vision .pillar__media img:last-child { margin-left: 0; }
 
   .feature { grid-template-columns: minmax(0, 1fr); }
   .feature__panel { padding: 56px var(--gutter); order: 2; }
