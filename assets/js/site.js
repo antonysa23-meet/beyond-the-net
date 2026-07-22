@@ -120,31 +120,22 @@
     results.innerHTML = html;
   }
 
+  // Visibility is [hidden] only. The `anim` class is a pure enhancement — if it
+  // never lands the panel still opens, just without the entrance motion.
   function openPanel() {
     lastFocused = document.activeElement;
     panel.hidden = false;
     document.body.classList.add('search-open');
-    // Next frame, so the transition has a start state to animate from
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () { panel.classList.add('is-open'); });
-    });
+    // Added after the element is displayed, so the animation actually runs
+    requestAnimationFrame(function () { panel.classList.add('anim'); });
     loadIndex().then(function () { render(input.value.trim()); });
     input.focus();
   }
 
   function closePanel() {
-    panel.classList.remove('is-open');
+    panel.hidden = true;
+    panel.classList.remove('anim');   // so it replays on next open
     document.body.classList.remove('search-open');
-    var done = function () {
-      panel.hidden = true;
-      panel.removeEventListener('transitionend', done);
-    };
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      done();
-    } else {
-      panel.addEventListener('transitionend', done);
-      setTimeout(done, 400);   // failsafe if transitionend never fires
-    }
     if (lastFocused) lastFocused.focus();
   }
 

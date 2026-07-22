@@ -49,8 +49,9 @@ python _tools/build.py
 - **Blog posts, services, events** live in `_tools/content.py`. Edit there and rebuild.
 - **The five main pages** keep their hand-tuned markup in `_partials/`. Edit the HTML in
   that folder — not the generated file at the repo root — then rebuild.
-- **Colors and fonts** are CSS custom properties at the top of `assets/css/style.css`
-  (`--brand`, `--ink`, `--slate`, `--serif`, `--sans`).
+- **Colors, fonts and spacing** are CSS custom properties at the top of
+  `assets/css/style.css` — `--brand`, `--ink`, `--paper`, `--display`, `--sans`, the
+  `--display-*` type scale and the `--space-*` scale. Change them there, not inline.
 - **Images** go in `assets/img/`. Keep them under roughly 250 KB, and set `width`/`height`
   on the `<img>` so the layout doesn't shift while loading.
 
@@ -60,11 +61,17 @@ so it stays in sync automatically. No backend required.
 ### Checking your work
 
 ```bash
-python _tools/verify.py     # every internal link, image, and shared asset resolves
-python -m http.server 8000  # then open http://localhost:8000
+python _tools/verify.py            # every internal link, image and shared asset resolves
+python _tools/content_snapshot.py  # dumps the visible text of every page
+python -m http.server 8000         # then open http://localhost:8000
 ```
 
-`_tools/crawl.py` re-crawls the original Wix site if you ever need to diff against it.
+`content_snapshot.py` is how a redesign is proved content-neutral: dump before, dump
+after, `diff` the two. The diff must be empty.
+
+**Preview over `http://`, not by double-clicking the files.** `file://` does not resolve
+a directory URL to its `index.html`, so `/blog/` and `/event-details/<slug>/` appear
+broken; only a server handles them.
 
 ## Deploying
 
@@ -72,8 +79,15 @@ Pushing to `main` publishes automatically via GitHub Pages.
 
 ## Notes
 
-- The body font is **Mulish**, standing in for Wix's licensed Avenir. Display type is
-  **Forum**, the same font the original used.
+- Display type is **Archivo** (uppercase, tight leading, negative tracking); body copy is
+  **Mulish**. The original Wix site used Forum over a licensed Avenir; both were replaced
+  during the redesign.
+- The design is deliberately flat: no border-radius and no soft shadows. Depth comes from
+  full-strength hairlines and hard offset blocks (`--offset`).
+- Scroll reveals are an enhancement, never a dependency. Elements are hidden only after JS
+  confirms motion is wanted, and a 2s failsafe reveals everything regardless — content
+  must never be stuck invisible. The search panel follows the same rule: it is visible by
+  default and its entrance animation is opt-in via a class.
 - Wix pages that were unfinished template boilerplate (`/adults`, `/parenting`, `/youth`,
   `/seniors`, `/portfolio`, and the placeholder privacy/refund/terms pages) were **not**
   carried over — they contained generic Wix filler text, not Beyond the Net's content.
