@@ -12,6 +12,11 @@ INSTAGRAM = "https://www.instagram.com/beyondthenethtx/"
 # their nav entry, and their search results in one step — then run _tools/build.py.
 SHOW_SERVICES = False
 
+# The blog (index + the three posts) is switched off the same way. POSTS below is
+# kept intact, so flipping this back to True restores the pages, the nav entry and
+# their search results in one step — then run _tools/build.py.
+SHOW_BLOG = False
+
 # --------------------------------------------------------------------- events
 # All three are past events, which is why /events shows "No events at the moment".
 EVENTS = [

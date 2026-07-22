@@ -38,8 +38,9 @@ NAV = [
 ]
 MORE = [
     ("events.html", "Events"),
-    ("blog/", "Blog"),
 ]
+if C.SHOW_BLOG:
+    MORE.append(("blog/", "Blog"))
 if C.SHOW_SERVICES:
     MORE.append(("book-online/", "Book Online"))
 FOOTER_NAV = [
@@ -187,6 +188,7 @@ def shell(path, title, desc, body, active="", share_img="assets/img/volleyball-c
 def not_found():
     """404.html is served for any missing URL at any depth, so relative asset
     paths would break. Everything here is absolute."""
+    extra = f'\n        <a href="{SITE_URL}blog/">Blog</a>' if C.SHOW_BLOG else ""
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -212,8 +214,7 @@ def not_found():
       <nav class="notfound__links" aria-label="Site">
         <a href="{SITE_URL}programs-and-services.html">Programs &amp; Services</a>
         <a href="{SITE_URL}about.html">About</a>
-        <a href="{SITE_URL}events.html">Events</a>
-        <a href="{SITE_URL}blog/">Blog</a>
+        <a href="{SITE_URL}events.html">Events</a>{extra}
         <a href="{SITE_URL}get-involved.html">Reach Out</a>
       </nav>
     </div>
@@ -427,16 +428,18 @@ def search_index():
                          "desc": s["description"],
                          "img": f"assets/img/{s['image']}" if s["image"] else "",
                          "text": " ".join([s["title"], s["tagline"], s["description"], s["price"]])})
-    for b in C.POSTS:
-        docs.append({"t": "Blog Posts", "title": b["title"], "url": f"post/{b['slug']}/",
-                     "desc": b["body"][0],
-                     "img": f"assets/img/{b['image']}" if b["image"] else "",
-                     "text": " ".join([b["title"]] + b["body"])})
+    if C.SHOW_BLOG:
+        for b in C.POSTS:
+            docs.append({"t": "Blog Posts", "title": b["title"], "url": f"post/{b['slug']}/",
+                         "desc": b["body"][0],
+                         "img": f"assets/img/{b['image']}" if b["image"] else "",
+                         "text": " ".join([b["title"]] + b["body"])})
     # Site pages: index the visible prose of each static page
     site_pages = [("index.html", "Home"), ("about.html", "About"),
                   ("programs-and-services.html", "Programs & Services"),
-                  ("get-involved.html", "Get Involved"), ("events.html", "Events"),
-                  ("blog/", "Blog")]
+                  ("get-involved.html", "Get Involved"), ("events.html", "Events")]
+    if C.SHOW_BLOG:
+        site_pages.append(("blog/", "Blog"))
     if C.SHOW_SERVICES:
         site_pages.append(("book-online/", "Book Online"))
     for path, title in site_pages:
@@ -480,15 +483,16 @@ def main():
         "Stay tuned for upcoming Beyond the Net events and workshops designed to support and "
         "empower youth in our community.", events_page(""), "events.html"))
 
-    write("blog/index.html", shell(
-        "blog/index.html", "Blog | Beyond The Net",
-        "Stories and guidance on mentorship, college readiness, and leadership.",
-        blog_index("../"), "blog/"))
+    if C.SHOW_BLOG:
+        write("blog/index.html", shell(
+            "blog/index.html", "Blog | Beyond The Net",
+            "Stories and guidance on mentorship, college readiness, and leadership.",
+            blog_index("../"), "blog/"))
 
-    for post in C.POSTS:
-        path = f"post/{post['slug']}/index.html"
-        write(path, shell(path, f"{post['title']} | Beyond The Net",
-                          post["body"][0][:155], post_page(post, "../../"), "blog/"))
+        for post in C.POSTS:
+            path = f"post/{post['slug']}/index.html"
+            write(path, shell(path, f"{post['title']} | Beyond The Net",
+                              post["body"][0][:155], post_page(post, "../../"), "blog/"))
 
     if C.SHOW_SERVICES:
         write("book-online/index.html", shell(

@@ -7,7 +7,6 @@ Go Home
 Programs & Services
 About
 Events
-Blog
 Reach Out
 
 ===== about.html
@@ -21,7 +20,6 @@ About
 Get Involved
 More
 Events
-Blog
 Search
 Close
 About Beyond the Net
@@ -55,44 +53,6 @@ Events
 Reach Out
 Developed by Antony Saleh
 
-===== blog/index.html
-Skip to Main Content
-Beyond the Net
-Houston
-Menu
-Home
-Programs & Services
-About
-Get Involved
-More
-Events
-Blog
-Search
-Close
-Blog
-Stories and guidance on mentorship, college readiness, and leadership from the Beyond the Net team.
-beyondthenethtx · Jun 10, 2025 · 1 min read
-Leadership Development for High School Students in Volleyball Program
-Are you a high school student passionate about volleyball and looking to enhance your leadership skills? Beyond the Net may just be the perfect opportunity for you!
-Read More
-beyondthenethtx · Jun 10, 2025 · 2 min read
-Empowering Youth for College through Volleyball Mentorship
-In the realm of youth empowerment and mentorship programs, there lies a uniquely impactful initiative known as Beyond the Net. This organization, rooted in the love for volleyball, has blossomed into a beacon of guidance for high school students on their journey towards college and leadership.
-Read More
-beyondthenethtx · Jun 10, 2025 · 1 min read
-Transforming Futures: College Prep and Leadership Program for Youth
-Are you a high school student looking to prepare for college and develop your leadership skills? If so, there's a fantastic program dedicated to helping you achieve your goals - a College Prep and Leadership Program for Youth offered by an organization called Beyond the Net.
-Read More
-Beyond the Net
-Houston
-Want to bring us to your school or have general inquiries? Email us:
-beyondthenethtx@gmail.com
-Programs & Services
-About
-Events
-Reach Out
-Developed by Antony Saleh
-
 ===== event-details/back-to-school-bash/index.html
 Skip to Main Content
 Beyond the Net
@@ -104,7 +64,6 @@ About
 Get Involved
 More
 Events
-Blog
 Search
 Close
 ← See other events
@@ -139,7 +98,6 @@ About
 Get Involved
 More
 Events
-Blog
 Search
 Close
 ← See other events
@@ -174,7 +132,6 @@ About
 Get Involved
 More
 Events
-Blog
 Search
 Close
 ← See other events
@@ -209,7 +166,6 @@ About
 Get Involved
 More
 Events
-Blog
 Search
 Close
 Upcoming Events
@@ -246,7 +202,6 @@ About
 Get Involved
 More
 Events
-Blog
 Search
 Close
 Get Involved
@@ -260,8 +215,6 @@ If you would like to start a chapter in your state or region, email us directly.
 Availability
 We are available after-school hours on a case-by-case basis. If you are part of your school's administration, please reach out at a minimum of 3 months prior to the start of the semester.
 Connect with Us
-Instagram
-@beyondthenethtx
 Email
 beyondthenethtx@gmail.com
 Beyond the Net
@@ -285,7 +238,6 @@ About
 Get Involved
 More
 Events
-Blog
 Search
 Close
 Welcome to Beyond the Net.
@@ -313,111 +265,6 @@ Events
 Reach Out
 Developed by Antony Saleh
 
-===== post/empowering-youth-for-college-through-volleyball-mentorship/index.html
-Skip to Main Content
-Beyond the Net
-Houston
-Menu
-Home
-Programs & Services
-About
-Get Involved
-More
-Events
-Blog
-Search
-Close
-← All Posts
-Empowering Youth for College through Volleyball Mentorship
-beyondthenethtx · Jun 10, 2025 · 2 min read
-In the realm of youth empowerment and mentorship programs, there lies a uniquely impactful initiative known as Beyond the Net. This organization, rooted in the love for volleyball, has blossomed into a beacon of guidance for high school students on their journey towards college and leadership.
-At its core, Beyond the Net stands as a supportive force for young individuals, offering tailored mentorship for college applications and fostering the growth of leadership skills within their local communities. By intertwining the passion for volleyball with the pursuit of higher education, this program not only aids students in achieving their academic dreams but also equips them with valuable life skills that will serve them well beyond the confines of a classroom.
-Catering to middle and high school students, Beyond the Net has crafted a virtual haven on their website where interested individuals can effortlessly sign up for the program. Furthermore, visitors to the site can delve into a wealth of information about the initiative, gaining insights into its core values and the remarkable work it has accomplished thus far.
-Unlike other organizations, Beyond the Net's website has a singular focus – to empower youth for college through volleyball mentorship. Straying away from conventional aims like fundraising or merchandise sales, the organization remains steadfast in its mission to uplift the next generation of leaders and scholars.
-As students navigate the tumultuous waters of college applications and personal development, Beyond the Net stands as a steadfast partner, guiding them towards brighter futures. Through the transformative power of mentorship and the unity forged in the love for volleyball, this organization is paving the way for a generation of empowered youth ready to take on the world.
-Recent Posts
-Leadership Development for High School Students in Volleyball Program
-Transforming Futures: College Prep and Leadership Program for Youth
-Beyond the Net
-Houston
-Want to bring us to your school or have general inquiries? Email us:
-beyondthenethtx@gmail.com
-Programs & Services
-About
-Events
-Reach Out
-Developed by Antony Saleh
-
-===== post/leadership-development-for-high-school-students-in-volleyball-program/index.html
-Skip to Main Content
-Beyond the Net
-Houston
-Menu
-Home
-Programs & Services
-About
-Get Involved
-More
-Events
-Blog
-Search
-Close
-← All Posts
-Leadership Development for High School Students in Volleyball Program
-beyondthenethtx · Jun 10, 2025 · 1 min read
-Are you a high school student passionate about volleyball and looking to enhance your leadership skills? Beyond the Net may just be the perfect opportunity for you!
-Founded at Rice University, Beyond the Net is an organization that focuses on mentoring youth for college and leadership through the sport of volleyball. Their program is designed to provide individualized college application mentorship to high school students while also helping them develop crucial leadership qualities that will benefit them in their future endeavors.
-Participating in Beyond the Net's volleyball program not only allows students to improve their athletic skills but also empowers them to take on leadership roles both on and off the court. Developing leadership skills during high school not only helps students become better team players but also sets them apart when it comes time to apply for college.
-By joining Beyond the Net, students have the opportunity to engage in community service projects, take on leadership roles within the program, and build strong relationships with their peers and mentors. These experiences not only enrich their high school years but also provide valuable experiences that college admissions officers look for in prospective students.
-If you're interested in joining Beyond the Net's volleyball program, be sure to check out their website for more information and sign up for this enriching opportunity. Who knows, this may just be the stepping stone you need to unlock your full potential both on and off the volleyball court.
-Recent Posts
-Empowering Youth for College through Volleyball Mentorship
-Transforming Futures: College Prep and Leadership Program for Youth
-Beyond the Net
-Houston
-Want to bring us to your school or have general inquiries? Email us:
-beyondthenethtx@gmail.com
-Programs & Services
-About
-Events
-Reach Out
-Developed by Antony Saleh
-
-===== post/transforming-futures-college-prep-and-leadership-program-for-youth/index.html
-Skip to Main Content
-Beyond the Net
-Houston
-Menu
-Home
-Programs & Services
-About
-Get Involved
-More
-Events
-Blog
-Search
-Close
-← All Posts
-Transforming Futures: College Prep and Leadership Program for Youth
-beyondthenethtx · Jun 10, 2025 · 1 min read
-Are you a high school student looking to prepare for college and develop your leadership skills? If so, there's a fantastic program dedicated to helping you achieve your goals - a College Prep and Leadership Program for Youth offered by an organization called Beyond the Net.
-Based at Rice University, Beyond the Net focuses on mentoring young individuals through the sport of volleyball. However, their impact goes far beyond the court. They provide personalized mentorship for the college application process, guiding students through each step and helping them highlight their leadership qualities and community involvement - all essential components of a strong college application.
-By targeting middle and high school students, Beyond the Net sets out to empower the youth to grow as leaders within their community. This not only enriches their personal development but also strengthens their college applications, setting them apart in a competitive applicant pool.
-On Beyond the Net's website, you can easily sign up for the program and learn more about how it can benefit you. You'll find a wealth of information on what the organization has already accomplished, demonstrating their dedication to transforming the futures of young individuals through education and leadership.
-If you're a student passionate about volleyball and eager to excel in college and beyond, consider joining Beyond the Net's College Prep and Leadership Program. With their guidance and support, you'll be well on your way to achieving your academic and leadership goals.
-Recent Posts
-Leadership Development for High School Students in Volleyball Program
-Empowering Youth for College through Volleyball Mentorship
-Beyond the Net
-Houston
-Want to bring us to your school or have general inquiries? Email us:
-beyondthenethtx@gmail.com
-Programs & Services
-About
-Events
-Reach Out
-Developed by Antony Saleh
-
 ===== programs-and-services.html
 Skip to Main Content
 Beyond the Net
@@ -429,7 +276,6 @@ About
 Get Involved
 More
 Events
-Blog
 Search
 Close
 Our Programs
