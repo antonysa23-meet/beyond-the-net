@@ -124,13 +124,27 @@
     lastFocused = document.activeElement;
     panel.hidden = false;
     document.body.classList.add('search-open');
+    // Next frame, so the transition has a start state to animate from
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { panel.classList.add('is-open'); });
+    });
     loadIndex().then(function () { render(input.value.trim()); });
     input.focus();
   }
 
   function closePanel() {
-    panel.hidden = true;
+    panel.classList.remove('is-open');
     document.body.classList.remove('search-open');
+    var done = function () {
+      panel.hidden = true;
+      panel.removeEventListener('transitionend', done);
+    };
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      done();
+    } else {
+      panel.addEventListener('transitionend', done);
+      setTimeout(done, 400);   // failsafe if transitionend never fires
+    }
     if (lastFocused) lastFocused.focus();
   }
 
@@ -163,6 +177,69 @@
         first.focus();
       }
     });
+  }
+
+  // ------------------------------------------------- header compact on scroll
+  var header = document.querySelector('.site-header');
+  if (header) {
+    var ticking = false;
+    var onScroll = function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        header.classList.toggle('is-scrolled', window.scrollY > 40);
+        ticking = false;
+      });
+    };
+    window.addEventListener('scroll', onScroll, {passive: true});
+    onScroll();
+  }
+
+  // ----------------------------------------------------------- scroll reveal
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reduceMotion && 'IntersectionObserver' in window) {
+    // The opt-in class means content stays visible if this never runs
+    document.documentElement.classList.add('js-reveal');
+    requestAnimationFrame(function () {
+      document.documentElement.classList.add('is-loaded');
+    });
+
+    var targets = document.querySelectorAll(
+      '.impact__inner, .supporters > .container, .values, .team, .how, .past-events, ' +
+      '.post-card, .service-card, .pillar, .trio__grid > *, .post__body, ' +
+      '.values__item, .card, .team__card, .past-event, .feature, .split'
+    );
+    Array.prototype.forEach.call(targets, function (el) { el.classList.add('reveal'); });
+
+    // Stagger siblings so grids and lists cascade instead of popping at once
+    ['.values__grid', '.cards', '.team__grid', '.past-events__list', '.trio__grid']
+      .forEach(function (sel) {
+        var group = document.querySelector(sel);
+        if (!group) return;
+        Array.prototype.forEach.call(group.children, function (child, i) {
+          child.style.setProperty('--d', (i * 70) + 'ms');
+        });
+      });
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      });
+    }, {rootMargin: '200px 0px 0px 0px', threshold: 0.01});
+
+    Array.prototype.forEach.call(targets, function (el) { io.observe(el); });
+
+    // Failsafe: content must never stay hidden. If the observer hasn't fired
+    // for something after 2s (print, screenshot tooling, an odd viewport),
+    // reveal everything rather than risk invisible copy.
+    setTimeout(function () {
+      Array.prototype.forEach.call(targets, function (el) {
+        el.classList.add('is-visible');
+      });
+    }, 2000);
   }
 
   // Escape closes whichever layer is open

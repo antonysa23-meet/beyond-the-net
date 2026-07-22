@@ -17,6 +17,7 @@ import content as C  # noqa: E402
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 PARTIALS = os.path.join(ROOT, "_partials")
+SITE_URL = "https://antonysa23-meet.github.io/beyond-the-net/"
 
 SEARCH_ICON = (
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">'
@@ -128,12 +129,18 @@ def footer(p):
       </ul>
     </nav>
   </div>
+
+  <div class="site-footer__credit">
+    <p>Developed by <a href="mailto:antony.saleh2017@gmail.com">Antony Saleh</a></p>
+  </div>
 </footer>"""
 
 
-def shell(path, title, desc, body, active=""):
+def shell(path, title, desc, body, active="", share_img="assets/img/volleyball-court.jpg"):
     depth = path.count("/")
     p = "../" * depth
+    # Absolute URLs — Open Graph consumers do not resolve relative paths
+    canonical = SITE_URL + ("" if path == "index.html" else path.replace("index.html", ""))
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -141,6 +148,18 @@ def shell(path, title, desc, body, active=""):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
+<link rel="canonical" href="{esc(canonical)}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Beyond the Net">
+<meta property="og:title" content="{esc(title)}">
+<meta property="og:description" content="{esc(desc)}">
+<meta property="og:url" content="{esc(canonical)}">
+<meta property="og:image" content="{esc(SITE_URL + share_img)}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{esc(title)}">
+<meta name="twitter:description" content="{esc(desc)}">
+<meta name="twitter:image" content="{esc(SITE_URL + share_img)}">
+<meta name="theme-color" content="#c2274b">
 <link rel="icon" href="{p}assets/img/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="{p}assets/css/style.css">
 </head>
@@ -160,6 +179,47 @@ def shell(path, title, desc, body, active=""):
 
 <script>window.SITE_BASE = "{p}";</script>
 <script src="{p}assets/js/site.js"></script>
+</body>
+</html>
+"""
+
+
+def not_found():
+    """404.html is served for any missing URL at any depth, so relative asset
+    paths would break. Everything here is absolute."""
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page Not Found | Beyond The Net</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#c2274b">
+<link rel="icon" href="{SITE_URL}assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="{SITE_URL}assets/css/style.css">
+</head>
+<body>
+
+<main id="main">
+  <section class="notfound">
+    <div class="container">
+      <p class="notfound__code">404</p>
+      <h1>There&rsquo;s nothing here&hellip;</h1>
+      <p class="notfound__text">We can&rsquo;t find the page you&rsquo;re looking for.
+        Check the URL, or head back home.</p>
+      <a class="btn" href="{SITE_URL}">Go Home</a>
+
+      <nav class="notfound__links" aria-label="Site">
+        <a href="{SITE_URL}programs-and-services.html">Programs &amp; Services</a>
+        <a href="{SITE_URL}about.html">About</a>
+        <a href="{SITE_URL}events.html">Events</a>
+        <a href="{SITE_URL}blog/">Blog</a>
+        <a href="{SITE_URL}get-involved.html">Reach Out</a>
+      </nav>
+    </div>
+  </section>
+</main>
+
 </body>
 </html>
 """
@@ -445,6 +505,8 @@ def main():
         path = f"event-details/{e['slug']}/index.html"
         write(path, shell(path, f"{e['title']} | Beyond The Net", e["summary"][:155],
                           event_page(e, "../../"), "events.html"))
+
+    write("404.html", not_found())
 
     docs = search_index()
     with open(os.path.join(ROOT, "assets", "search-index.json"), "w", encoding="utf-8") as f:

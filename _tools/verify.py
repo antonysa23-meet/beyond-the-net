@@ -44,14 +44,16 @@ def main():
             if not any(os.path.exists(os.path.join(ROOT, c)) for c in candidates):
                 problems.append(f"{rel}: {kind}=\"{target}\" -> missing")
 
-        for needed in ["assets/css/style.css", "assets/js/site.js"]:
-            depth = rel.count("/")
-            expect = ("../" * depth) + needed
-            if expect not in src:
-                problems.append(f"{rel}: does not reference {expect}")
+        # 404.html is standalone by design: absolute asset URLs, no nav or search
+        if rel != "404.html":
+            for needed in ["assets/css/style.css", "assets/js/site.js"]:
+                depth = rel.count("/")
+                expect = ("../" * depth) + needed
+                if expect not in src:
+                    problems.append(f"{rel}: does not reference {expect}")
 
-        if "search-panel" not in src:
-            problems.append(f"{rel}: missing search panel")
+            if "search-panel" not in src:
+                problems.append(f"{rel}: missing search panel")
 
     print(f"Checked {len(pages)} pages")
     for p in pages:
