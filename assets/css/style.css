@@ -201,6 +201,7 @@ h1, h2, h3, p { margin: 0; }
   line-height: 44px;
   color: var(--ink);
   position: relative;
+  white-space: nowrap;   /* never break "Programs & Services" mid-phrase */
   transition: color var(--fast);
 }
 .nav__list > li > a::before {
@@ -622,30 +623,64 @@ body.search-open { overflow: hidden; }
   color: var(--muted);
 }
 
+/* A single logo stranded across a full-width row read as empty. The logo now
+   sits in a bordered tile with the CTA directly beside it, so the group reads
+   as one object instead of two items pushed to opposite edges. */
 .supporters__strip {
   grid-column: 1 / -1;
-  display: flex; align-items: center; justify-content: space-between;
-  gap: var(--space-5);
+  display: flex; align-items: stretch; flex-wrap: wrap;
+  gap: 0;
   margin-top: var(--space-6);
   border-top: 3px solid var(--ink);
-  border-bottom: 1px solid var(--rule);
-  padding: var(--space-5) 0;
+  border-bottom: 3px solid var(--ink);
+  padding: 0;
   min-height: 0;
 }
-.supporters__cell { display: flex; align-items: center; padding: 0; }
-.supporters__cell + .supporters__cell { border-left: 0; }
+.supporters__cell {
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--space-5) var(--space-6);
+  min-width: 220px;
+}
+.supporters__cell:first-child { border-right: 1px solid var(--rule-soft); }
 .supporters__cell img {
-  max-height: 92px; width: auto;
+  max-height: 76px; width: auto;
   transition: transform var(--fast);
 }
-.supporters__cell img:hover { transform: scale(1.04); }
-.supporters__more {
-  color: var(--ink);
-  border-bottom: 3px solid var(--brand);
-  padding-bottom: 5px;
-  transition: color var(--fast);
+.supporters__cell:first-child:hover img { transform: scale(1.04); }
+
+/* CTA cell stretches to fill the remaining width and inverts on hover */
+.supporters__cell:last-child {
+  position: relative;   /* anchor for the stretched link below */
+  flex: 1;
+  justify-content: space-between;
+  gap: var(--space-5);
+  transition: background var(--fast), color var(--fast);
 }
-.supporters__more:hover { color: var(--brand); }
+.supporters__cell:last-child:hover { background: var(--ink); color: var(--white); }
+.supporters__more {
+  display: flex; align-items: center; gap: var(--space-3);
+  width: 100%;
+  justify-content: space-between;
+  color: inherit;
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+/* Stretched link: the whole cell is the hit area, not just the words */
+.supporters__more::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+.supporters__cell:last-child:focus-within { background: var(--ink); color: var(--white); }
+.supporters__more::after {
+  content: '';
+  width: 10px; height: 10px;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform var(--fast);
+}
+.supporters__cell:last-child:hover .supporters__more::after { transform: rotate(45deg) translate(3px, -3px); }
 
 /* ------------------------------------------------------------ page intro */
 
@@ -1330,18 +1365,18 @@ body.search-open { overflow: hidden; }
   .home-top {
     display: block;
   }
-  .home-top__copy { padding: 48px var(--gutter) 0; max-width: none; }
-  .home-top__photo { height: 420px; margin-top: 40px; }
-  .home-top__aside { height: 360px; }
-  .home-top__panel { padding: 48px var(--gutter); }
+  .home-top__copy { padding: var(--space-7) var(--gutter) var(--space-5); max-width: none; }
+  .home-top__photo { height: 300px; }
+  .home-top__aside { height: 240px; }
+  .home-top__panel { padding: var(--space-7) var(--gutter); }
   .statement__body { max-width: none; }
 
-  .impact__inner { padding: 64px var(--gutter); }
+  .impact__inner { padding: var(--space-7) var(--gutter); }
 
   .services { grid-template-columns: minmax(0, 1fr); min-height: 0; }
-  .services__img--left, .services__img--right { grid-column: 1; height: 420px; }
+  .services__img--left, .services__img--right { grid-column: 1; height: 260px; }
   .services__img--right { order: 3; }
-  .services__panel { grid-column: 1; order: 2; padding: 56px var(--gutter); }
+  .services__panel { grid-column: 1; order: 2; padding: var(--space-7) var(--gutter); }
 
   .pillars__grid { gap: 56px; }
   /* The decorative indents on the text and the images must drop together —
@@ -1366,9 +1401,11 @@ body.search-open { overflow: hidden; }
   .search-group__items { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-@media (max-width: 900px) {
-  :root { --gutter: 32px; }
-
+/* The nav collapses to a hamburger at 1080, not 900. With five items plus the
+   More dropdown and the search control it runs out of horizontal room around
+   1100px, and the labels were wrapping mid-phrase ("Programs & / Services")
+   before the hamburger took over. */
+@media (max-width: 1080px) {
   .site-header__inner {
     min-height: 0;
     padding: 20px var(--gutter);
@@ -1400,6 +1437,22 @@ body.search-open { overflow: hidden; }
     font-size: 12px; font-weight: 700; letter-spacing: .16em;
   }
 
+  /* The More dropdown becomes a plain inline group inside the mobile panel */
+  .nav__more { border-bottom: 0; }
+  .nav__more-btn { display: none; }
+  .nav__submenu {
+    position: static;
+    opacity: 1; visibility: visible; transform: none;
+    border: 0; padding: 0; min-width: 0;
+  }
+  .nav__submenu li { border-top: 1px solid var(--rule-soft); }
+  .nav__submenu a { padding: 0; line-height: 54px; }
+  .nav__submenu a:hover { background: none; color: var(--brand); }
+}
+
+@media (max-width: 900px) {
+  :root { --gutter: 32px; }
+
   .container { padding-inline: var(--gutter); }
   .statement__body { font-size: 26px; max-width: none; }
 
@@ -1429,19 +1482,6 @@ body.search-open { overflow: hidden; }
 
   .site-footer__inner { grid-template-columns: 1fr; gap: var(--space-6); }
 
-  /* The More dropdown becomes a plain inline group inside the mobile panel */
-  .nav__more { border-bottom: 0; }
-  .nav__more-btn { display: none; }
-  .nav__submenu {
-    position: static;
-    opacity: 1; visibility: visible; transform: none;
-    border: 0; padding: 0; min-width: 0;
-  }
-  .nav__submenu li + li { border-top: 1px solid var(--rule-soft); }
-  .nav__submenu li { border-top: 1px solid var(--rule-soft); }
-  .nav__submenu a { padding: 0; line-height: 54px; }
-  .nav__submenu a:hover { background: none; color: var(--brand); }
-
   .search-panel { padding: var(--space-4) var(--gutter) var(--space-7); }
   .search-panel__bar { gap: var(--space-3); margin-bottom: var(--space-6); }
   .search-group__items { grid-template-columns: 1fr; gap: var(--space-4); }
@@ -1451,8 +1491,31 @@ body.search-open { overflow: hidden; }
 }
 
 @media (max-width: 620px) {
-  /* Two 64px numerals side by side still crowd a phone — stack them */
-  .stats { grid-template-columns: 1fr; gap: var(--space-6); }
+  /* --- Home, tuned for a phone rather than a squeezed desktop layout ---
+     The hero and services stacked four tall full-width photos, which was most
+     of the wasted space. Images become banners and the crimson panels lead. */
+  .home-top__copy { padding: var(--space-6) var(--gutter) var(--space-4); }
+  .home-top__photo { height: 210px; }
+  .home-top__aside { height: 170px; }
+  .home-top__panel { padding: var(--space-6) var(--gutter); }
+  .home-top__panel .btn { margin-top: var(--space-4); width: 100%; justify-content: space-between; }
+
+  .services__img--left, .services__img--right { height: 180px; }
+  .services__panel { padding: var(--space-6) var(--gutter); }
+
+  /* Stats read as one stacked block with a rule between, not two columns */
+  .stats { grid-template-columns: 1fr; gap: var(--space-5); }
+  .stat { padding-top: var(--space-3); }
+  .stat__value { font-size: clamp(64px, 22vw, 96px); }
+  .stat__label { font-size: 16px; max-width: none; }
+
+  .supporters { padding: var(--space-7) 0 var(--space-6); }
+  .supporters > .container { gap: var(--space-4); }
+  .supporters__strip { flex-direction: row; flex-wrap: nowrap; }
+  .supporters__cell { min-width: 0; padding: var(--space-4); }
+  .supporters__cell:first-child { flex: 0 0 40%; }
+  .supporters__cell img { max-height: 52px; }
+  .supporters__more { font-size: 11px; }
 
   .page-intro { padding-top: var(--space-7); }
   .page-intro h1, .home-top__copy h1 { font-size: 34px; }

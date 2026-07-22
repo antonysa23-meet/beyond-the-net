@@ -218,7 +218,7 @@
         var group = document.querySelector(sel);
         if (!group) return;
         Array.prototype.forEach.call(group.children, function (child, i) {
-          child.style.setProperty('--d', (i * 70) + 'ms');
+          child.style.setProperty('--d', (i * 55) + 'ms');
         });
       });
 
@@ -228,7 +228,9 @@
         entry.target.classList.add('is-visible');
         io.unobserve(entry.target);
       });
-    }, {rootMargin: '200px 0px 0px 0px', threshold: 0.01});
+    // Negative bottom margin holds the trigger until the element is properly
+    // inside the viewport — firing at the very edge made it read as early.
+    }, {rootMargin: '0px 0px -18% 0px', threshold: 0.15});
 
     Array.prototype.forEach.call(targets, function (el) { io.observe(el); });
 
