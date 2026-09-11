@@ -1,8 +1,11 @@
-"""Check every generated page: internal links resolve, images exist, assets are wired."""
+"""Check every generated page: internal links resolve, images exist, assets are wired,
+and the search-engine basics (titles, descriptions, structured data, sitemap) are in place."""
 import glob
+import json
 import os
 import re
 import sys
+import xml.etree.ElementTree as ET
 from html import unescape
 from urllib.parse import urljoin
 
@@ -55,6 +58,47 @@ def main():
             if "search-panel" not in src:
                 problems.append(f"{rel}: missing search panel")
 
+            # Search engines: every page needs a branded title, a description, a canonical
+            title = re.search(r"<title>([^<]*)</title>", src)
+            if not title or "Beyond the Net Houston" not in unescape(title.group(1)):
+                problems.append(f"{rel}: <title> does not name Beyond the Net Houston")
+            if not re.search(r'<meta name="description" content="[^"]{50,}"', src):
+                problems.append(f"{rel}: missing or too-short meta description")
+            if '<link rel="canonical"' not in src:
+                problems.append(f"{rel}: missing canonical link")
+
+        for block in re.findall(r'(?s)<script type="application/ld\+json">(.*?)</script>', src):
+            try:
+                json.loads(block)
+            except ValueError as e:
+                problems.append(f"{rel}: invalid JSON-LD ({e})")
+
+    home = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
+    if "application/ld+json" not in home:
+        problems.append("index.html: missing schema.org structured data")
+
+    # Sitemap: every URL must exist, and every real page must be listed
+    site_url = re.search(r'<link rel="canonical" href="([^"]+)"', home).group(1)
+    sitemap_path = os.path.join(ROOT, "sitemap.xml")
+    listed = set()
+    if not os.path.exists(sitemap_path):
+        problems.append("sitemap.xml: missing")
+    else:
+        for loc in ET.parse(sitemap_path).getroot().iter(
+                "{http://www.sitemaps.org/schemas/sitemap/0.9}loc"):
+            if not loc.text.startswith(site_url):
+                problems.append(f"sitemap.xml: {loc.text} is off-site")
+                continue
+            rel = loc.text[len(site_url):] or "index.html"
+            if rel.endswith("/"):
+                rel += "index.html"
+            listed.add(rel)
+            if not os.path.exists(os.path.join(ROOT, rel)):
+                problems.append(f"sitemap.xml: {loc.text} -> missing")
+        for rel in pages:
+            if rel != "404.html" and rel not in listed:
+                problems.append(f"sitemap.xml: does not list {rel}")
+
     print(f"Checked {len(pages)} pages")
     for p in pages:
         print("  ", p)
@@ -63,7 +107,7 @@ def main():
         for p in problems:
             print("  -", p)
         return 1
-    print("\nAll internal links, images, and shared assets resolve.")
+    print("\nAll internal links, images, shared assets, SEO tags and the sitemap check out.")
     return 0
 
 

@@ -17,6 +17,41 @@ SHOW_SERVICES = False
 # their search results in one step — then run _tools/build.py.
 SHOW_BLOG = False
 
+# ------------------------------------------------------------------------ SEO
+# What Google actually ranks on is the <title>, the visible text, and the structured
+# data built from the lists below. The meta keywords tag is emitted too, but Google
+# ignores it — keep the phrases here in sync with real, visible copy.
+
+# Paste the content="..." value from Google Search Console's "HTML tag" verification
+# method here, then rebuild. Empty means no tag is emitted.
+GOOGLE_SITE_VERIFICATION = "z6HrLzCaQ1gl8MEXfv38W3GCSvTy30JxBHt7jUpniJ8"
+
+# Other names people search for. Feeds schema.org alternateName, which tells Google
+# these all refer to this one organization.
+ALT_NAMES = [
+    "Beyond the Net Houston",
+    "Beyond the Net HTX",
+    "Beyond the Net TX",
+    "Beyond the Net Rice University",
+    "beyondthenethtx",
+]
+
+FOUNDERS = [
+    {"name": "Carlos Cruz", "role": "Founder + Co-Director", "email": "cc211@rice.edu"},
+    {"name": "Arman Najari", "role": "Founder + Co-Director", "email": "aen5@rice.edu"},
+]
+
+KEYWORDS = [
+    "beyond the net", "beyond the net houston", "beyond the net htx", "beyond the net tx",
+    "beyond the net texas", "beyondthenethtx", "beyond the net carlos cruz",
+    "beyond the net arman najari", "beyond the net rice", "beyond the net rice uni",
+    "beyond the net rice university", "beyond the net volleyball",
+    "beyond the net mentorship", "beyond the net nonprofit", "carlos cruz rice university",
+    "houston youth mentorship", "houston volleyball mentorship",
+    "youth volleyball nonprofit houston", "college readiness mentoring houston",
+    "first-generation student mentorship houston", "rice university student nonprofit",
+]
+
 # --------------------------------------------------------------------- events
 # All three are past events, which is why /events shows "No events at the moment".
 EVENTS = [

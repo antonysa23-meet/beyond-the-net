@@ -1321,6 +1321,7 @@ body.search-open { overflow: hidden; }
   margin-top: var(--space-3);
   color: var(--white);
 }
+.footer__about,
 .footer__contact {
   margin-top: var(--space-5);
   max-width: 34ch;

@@ -77,6 +77,26 @@ broken; only a server handles them.
 
 Pushing to `main` publishes automatically via GitHub Pages.
 
+## Search engines (SEO)
+
+`build.py` gives every page a title ending in "Beyond the Net Houston", a description,
+and a canonical URL. The home page also gets schema.org structured data (organization,
+alternate names such as "Beyond the Net HTX", founders, Rice University). The build
+also writes `sitemap.xml`. Names, founders and keywords live in the SEO block of
+`_tools/content.py`; `verify.py` fails if any of this goes missing.
+
+For Google to list the site, it has to be registered once in
+[Google Search Console](https://search.google.com/search-console):
+
+1. Add a **URL prefix** property for `https://antonysa23-meet.github.io/beyond-the-net/`.
+2. Choose the **HTML tag** method, copy the `content="..."` value into
+   `GOOGLE_SITE_VERIFICATION` in `_tools/content.py`, rebuild, push, then click Verify.
+3. Under **Sitemaps**, submit `sitemap.xml`.
+4. Under **URL inspection**, inspect the home page and click **Request indexing**.
+
+If the site moves to its own domain, update `SITE_URL` in `build.py` and rebuild.
+`robots.txt` then takes effect too. Crawlers only read it at the root of a domain.
+
 ## Notes
 
 - Display type is **Archivo** (uppercase, tight leading, negative tracking); body copy is

@@ -18,6 +18,10 @@ import content as C  # noqa: E402
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 PARTIALS = os.path.join(ROOT, "_partials")
 SITE_URL = "https://antonysa23-meet.github.io/beyond-the-net/"
+# Every <title> ends with this, so each page carries the name people search for
+BRAND = "Beyond the Net Houston"
+TAGLINE = ("Beyond the Net Houston (HTX) is a youth volleyball mentorship nonprofit founded by "
+           "Carlos Cruz and Arman Najari of Rice University.")
 
 SEARCH_ICON = (
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">'
@@ -115,6 +119,7 @@ def footer(p):
         <span class="brand__name">Beyond the Net</span>
         <span class="brand__city">Houston</span>
       </a>
+      <p class="footer__about">{esc(TAGLINE)}</p>
       <p class="footer__contact">
         Want to bring us to your school or have general inquiries? Email us:<br>
         <a href="mailto:{C.EMAIL}">{C.EMAIL}</a>
@@ -137,11 +142,69 @@ def footer(p):
 </footer>"""
 
 
+def canonical_url(path):
+    return SITE_URL + ("" if path == "index.html" else path.replace("index.html", ""))
+
+
+def structured_data():
+    """schema.org graph for the home page: the organization, its alternate names and
+    founders, and the site itself. This is what lets Google match searches like
+    "beyond the net rice university" or "beyond the net carlos cruz" to this site."""
+    org_id = SITE_URL + "#organization"
+    rice = {"@type": "CollegeOrUniversity", "name": "Rice University",
+            "sameAs": "https://www.rice.edu/"}
+    graph = [
+        {
+            "@type": "NGO",
+            "@id": org_id,
+            "name": "Beyond the Net",
+            "alternateName": C.ALT_NAMES,
+            "url": SITE_URL,
+            "logo": SITE_URL + "assets/img/logo.png",
+            "image": SITE_URL + "assets/img/volleyball-court.jpg",
+            "description": TAGLINE + " We mentor underserved youth in post-secondary "
+                           "education, healthy lifestyles, and character development - "
+                           "with volleyball as our medium.",
+            "email": C.EMAIL,
+            "sameAs": [C.INSTAGRAM],
+            "address": {"@type": "PostalAddress", "addressLocality": "Houston",
+                        "addressRegion": "TX", "addressCountry": "US"},
+            "areaServed": {"@type": "City", "name": "Houston, Texas"},
+            "founder": [
+                {"@type": "Person", "name": f["name"], "jobTitle": f["role"],
+                 "email": f["email"], "affiliation": rice}
+                for f in C.FOUNDERS
+            ],
+            "knowsAbout": ["Youth mentorship", "College readiness", "Volleyball",
+                           "First-generation students"],
+        },
+        {
+            "@type": "WebSite",
+            "@id": SITE_URL + "#website",
+            "name": "Beyond the Net",
+            "alternateName": C.ALT_NAMES,
+            "url": SITE_URL,
+            "publisher": {"@id": org_id},
+        },
+    ]
+    data = json.dumps({"@context": "https://schema.org", "@graph": graph},
+                      ensure_ascii=False, indent=1)
+    # "</" inside a <script> block would end it early
+    return data.replace("</", "<\\/")
+
+
 def shell(path, title, desc, body, active="", share_img="assets/img/volleyball-court.jpg"):
     depth = path.count("/")
     p = "../" * depth
     # Absolute URLs — Open Graph consumers do not resolve relative paths
-    canonical = SITE_URL + ("" if path == "index.html" else path.replace("index.html", ""))
+    canonical = canonical_url(path)
+    extra_head = ""
+    if path == "index.html":
+        if C.GOOGLE_SITE_VERIFICATION:
+            extra_head += (f'<meta name="google-site-verification" '
+                           f'content="{esc(C.GOOGLE_SITE_VERIFICATION)}">\n')
+        extra_head += (f'<script type="application/ld+json">\n{structured_data()}\n'
+                       f'</script>\n')
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -149,6 +212,7 @@ def shell(path, title, desc, body, active="", share_img="assets/img/volleyball-c
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
+<meta name="keywords" content="{esc(", ".join(C.KEYWORDS))}">
 <link rel="canonical" href="{esc(canonical)}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Beyond the Net">
@@ -162,8 +226,10 @@ def shell(path, title, desc, body, active="", share_img="assets/img/volleyball-c
 <meta name="twitter:image" content="{esc(SITE_URL + share_img)}">
 <meta name="theme-color" content="#c2274b">
 <link rel="icon" href="{p}assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="{p}assets/img/logo.png" type="image/png" sizes="512x512">
+<link rel="apple-touch-icon" href="{p}assets/img/logo.png">
 <link rel="stylesheet" href="{p}assets/css/style.css">
-</head>
+{extra_head}</head>
 <body>
 
 <a class="skip-link" href="#main">Skip to Main Content</a>
@@ -461,56 +527,75 @@ def main():
     print("Building pages:")
 
     pages = [
-        ("index.html", "Home | Beyond The Net",
-         "Beyond the Net mentors underserved youth in post-secondary education, healthy "
-         "lifestyles, and character development - with volleyball as our medium.", "index.html"),
-        ("about.html", "About | Beyond The Net",
-         "Learn more about Beyond the Net's vision, mission statement, and founders and "
-         "executive directors.", "about.html"),
-        ("programs-and-services.html", "Programs & Services | Beyond The Net",
-         "Learn more about how we impact Houston youth - on and off the court.",
+        ("index.html", f"{BRAND} (HTX) | Youth Volleyball Mentorship Nonprofit",
+         "Beyond the Net Houston (HTX) mentors underserved youth in college readiness, healthy "
+         "lifestyles, and character development through volleyball. Founded by Carlos Cruz "
+         "and Arman Najari of Rice University.", "index.html"),
+        ("about.html", f"About {BRAND} | Carlos Cruz & Arman Najari, Rice University",
+         "Meet the founders of Beyond the Net Houston, Carlos Cruz and Arman Najari of Rice "
+         "University, and learn about our vision, mission, and values.", "about.html"),
+        ("programs-and-services.html", f"Programs & Services | {BRAND}",
+         "Learn more about how Beyond the Net impacts Houston youth - on and off the court: "
+         "college application help, mentorship, volleyball, and volunteer hours.",
          "programs-and-services.html"),
-        ("get-involved.html", "Get Involved | Beyond The Net",
-         "If you're a student, teacher, parent, or future volunteer, feel free to reach out. "
-         "We would love to hear from you!", "get-involved.html"),
+        ("get-involved.html", f"Get Involved | {BRAND}",
+         "Volunteer, partner, or bring Beyond the Net Houston to your school. Students, "
+         "teachers, parents, and future volunteers - we would love to hear from you!",
+         "get-involved.html"),
     ]
     for path, title, desc, active in pages:
         body = open(os.path.join(PARTIALS, path), encoding="utf-8").read().rstrip()
         write(path, shell(path, title, desc, body, active))
 
     write("events.html", shell(
-        "events.html", "Events | Beyond The Net",
-        "Stay tuned for upcoming Beyond the Net events and workshops designed to support and "
-        "empower youth in our community.", events_page(""), "events.html"))
+        "events.html", f"Events | {BRAND}",
+        "Stay tuned for upcoming Beyond the Net Houston events and workshops designed to "
+        "support and empower youth in our community.", events_page(""), "events.html"))
+
+    sitemap = ["index.html", "about.html", "programs-and-services.html",
+               "get-involved.html", "events.html"]
 
     if C.SHOW_BLOG:
         write("blog/index.html", shell(
-            "blog/index.html", "Blog | Beyond The Net",
+            "blog/index.html", f"Blog | {BRAND}",
             "Stories and guidance on mentorship, college readiness, and leadership.",
             blog_index("../"), "blog/"))
+        sitemap.append("blog/index.html")
 
         for post in C.POSTS:
             path = f"post/{post['slug']}/index.html"
-            write(path, shell(path, f"{post['title']} | Beyond The Net",
+            write(path, shell(path, f"{post['title']} | {BRAND}",
                               post["body"][0][:155], post_page(post, "../../"), "blog/"))
+            sitemap.append(path)
 
     if C.SHOW_SERVICES:
         write("book-online/index.html", shell(
-            "book-online/index.html", "Book Online | Beyond The Net",
+            "book-online/index.html", f"Book Online | {BRAND}",
             "Sessions and mentorship offered by Beyond the Net.",
             booking_index("../"), "book-online/"))
+        sitemap.append("book-online/index.html")
 
         for s in C.SERVICES:
             path = f"service-page/{s['slug']}/index.html"
-            write(path, shell(path, f"{s['title']} | Beyond The Net", s["description"][:155],
+            write(path, shell(path, f"{s['title']} | {BRAND}", s["description"][:155],
                               service_page(s, "../../"), "book-online/"))
+            sitemap.append(path)
 
     for e in C.EVENTS:
         path = f"event-details/{e['slug']}/index.html"
-        write(path, shell(path, f"{e['title']} | Beyond The Net", e["summary"][:155],
+        write(path, shell(path, f"{e['title']} | {BRAND}", e["summary"][:155],
                           event_page(e, "../../"), "events.html"))
+        sitemap.append(path)
 
     write("404.html", not_found())
+
+    urls = "\n".join(f"  <url><loc>{esc(canonical_url(p))}</loc></url>" for p in sitemap)
+    write("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n'
+          '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+          f"{urls}\n</urlset>\n")
+    # Crawlers only read robots.txt at the root of a host, so on the github.io project
+    # URL this file is inert. It takes effect once the site moves to its own domain.
+    write("robots.txt", f"User-agent: *\nAllow: /\n\nSitemap: {SITE_URL}sitemap.xml\n")
 
     docs = search_index()
     with open(os.path.join(ROOT, "assets", "search-index.json"), "w", encoding="utf-8") as f:
