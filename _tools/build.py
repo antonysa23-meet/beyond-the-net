@@ -240,6 +240,7 @@ def shell(path, title, desc, body, active="", share_img="assets/img/volleyball-c
 <meta name="twitter:description" content="{esc(desc)}">
 <meta name="twitter:image" content="{esc(SITE_URL + share_img)}">
 <meta name="theme-color" content="#c2274b">
+<link rel="icon" href="{p}favicon.ico" sizes="any">
 <link rel="icon" href="{p}assets/img/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="{p}assets/img/logo.png" type="image/png" sizes="512x512">
 <link rel="apple-touch-icon" href="{p}assets/img/logo.png">
