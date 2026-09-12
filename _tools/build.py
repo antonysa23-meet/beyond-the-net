@@ -19,7 +19,8 @@ import content as C  # noqa: E402
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 PARTIALS = os.path.join(ROOT, "_partials")
-SITE_URL = "https://antonysa23-meet.github.io/beyond-the-net/"
+SITE_URL = (f"https://{C.CUSTOM_DOMAIN}/" if C.CUSTOM_DOMAIN
+            else "https://antonysa23-meet.github.io/beyond-the-net/")
 # Every <title> ends with this, so each page carries the name people search for
 BRAND = "Beyond the Net Houston"
 TAGLINE = ("Beyond the Net Houston (HTX) is a youth volleyball mentorship nonprofit founded by "
@@ -604,6 +605,10 @@ def main():
         sitemap.append(path)
 
     write("404.html", not_found())
+
+    # GitHub Pages reads this file to serve the site on its own domain
+    if C.CUSTOM_DOMAIN:
+        write("CNAME", C.CUSTOM_DOMAIN + "\n")
 
     urls = "\n".join(
         f"  <url><loc>{esc(canonical_url(p))}</loc>"

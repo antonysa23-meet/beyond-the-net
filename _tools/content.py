@@ -22,6 +22,10 @@ SHOW_BLOG = False
 # data built from the lists below. The meta keywords tag is emitted too, but Google
 # ignores it — keep the phrases here in sync with real, visible copy.
 
+# The site's own domain. build.py writes it to the CNAME file GitHub Pages reads,
+# so a rebuild can never drop it. Empty falls back to the github.io address.
+CUSTOM_DOMAIN = "beyondthenethtx.com"
+
 # Paste the content="..." value from Google Search Console's "HTML tag" verification
 # method here, then rebuild. Empty means no tag is emitted.
 GOOGLE_SITE_VERIFICATION = "z6HrLzCaQ1gl8MEXfv38W3GCSvTy30JxBHt7jUpniJ8"

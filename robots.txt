@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://antonysa23-meet.github.io/beyond-the-net/sitemap.xml
+Sitemap: https://beyondthenethtx.com/sitemap.xml
