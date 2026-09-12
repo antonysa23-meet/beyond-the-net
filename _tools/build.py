@@ -6,10 +6,12 @@ Output: HTML at the repo root plus assets/search-index.json
 The five main pages keep their hand-tuned markup, stored in _partials/; this script
 only wraps them in the shared header/footer so the chrome never drifts between pages.
 """
+import datetime
 import html
 import json
 import os
 import re
+import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
@@ -140,6 +142,19 @@ def footer(p):
     <p>Developed by <a href="mailto:antony.saleh2017@gmail.com">Antony Saleh</a></p>
   </div>
 </footer>"""
+
+
+def last_modified(path):
+    """Date this page last changed, for <lastmod>. Taken from git so it stays stable
+    between rebuilds; a rebuild that changes nothing must not bump every date."""
+    try:
+        out = subprocess.run(["git", "log", "-1", "--format=%cs", "--", path],
+                             cwd=ROOT, capture_output=True, text=True, timeout=10)
+        if out.returncode == 0 and out.stdout.strip():
+            return out.stdout.strip()
+    except (OSError, subprocess.SubprocessError):
+        pass
+    return datetime.date.today().isoformat()
 
 
 def canonical_url(path):
@@ -589,7 +604,9 @@ def main():
 
     write("404.html", not_found())
 
-    urls = "\n".join(f"  <url><loc>{esc(canonical_url(p))}</loc></url>" for p in sitemap)
+    urls = "\n".join(
+        f"  <url><loc>{esc(canonical_url(p))}</loc>"
+        f"<lastmod>{last_modified(p)}</lastmod></url>" for p in sitemap)
     write("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n'
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
           f"{urls}\n</urlset>\n")
